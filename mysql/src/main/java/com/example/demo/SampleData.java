@@ -1,50 +1,66 @@
 package com.example.demo;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "todolist")
+@Data
+@NoArgsConstructor
 public class SampleData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-	@Column(length = 100, nullable = false)
+	public SampleData(String type, String task, int preference) {
+		super();
+		this.type = type;
+		this.task = task;
+		this.preference = preference;
+	}
+
 	private String type;
 
-	@Column(length = 255, nullable = true)
 	private String task;
 
-	@Column(length = 50, nullable = true)
-	private String preference;
+	private int preference;
 
-	public String getName() {
+	//ゲッターとセッター
+	public String getType() {
 		return type;
 	}
 
-	public void setName(String name) {
-		this.type = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getPrice() {
+	public String getTask() {
 		return task;
 	}
 
-	public void setPrice(String price) {
-		this.task = price;
+	public void setTask(String task) {
+		this.task = task;
 	}
 
-	public String getStock() {
+	public int getPreference() {
 		return preference;
 	}
 
-	public void setStock(String stock) {
-		this.preference = stock;
+	public void setPreference(int preference) {
+		this.preference = preference;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

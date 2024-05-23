@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ToDoリスト</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background-color: rgb(181, 236, 227);
+    font-family: 'Dela Gothic One', sans-serif;
+    background-image: radial-gradient(circle, rgb(255, 255, 255) 2px, transparent 5px); /* ドット柄のサイズを変更 */
+    background-size: 40px 40px; /* ドット柄の間隔を変更 */
+  }
+  .container {
+    margin-top: 50px;
+    text-align: center; /* 中央揃えにする */
+  }
+  .table {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  .table th, .table td {
+    border-top: none;
+  }
+  .table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+  }
+  .todo-list-header {
+    background-color: rgb(255, 140, 198); /* ピンク色に設定 */
+    color: #ffffff; /* 文字色を白色に設定 */
+    padding: 20px; /* 余白を追加 */
+    border-radius: 10px; /* 角丸を適用 */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    animation: floatUpDown 1s ease-in-out infinite alternate; /* 上下にふわふわと動くアニメーション */
+  }
+  .table th:nth-child(3) {
+    width: 40%; /* task列の幅を広くする */
+  }
+  .table th:hover {
+    color: #ff69b4; /* ピンク色に変更 */
+    cursor: pointer; /* カーソルをポインターに変更 */
+  }
+
+  @keyframes floatUpDown {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-15px);
+    }
+  }
+
+  /* 送信ボタンのスタイル */
+  input[type="submit"] {
+    margin-top: 20px; /* 上部の余白を追加 */
+  }
+  
+  /* ボタンのスタイル */
+  input[type="submit"]{
+      background-color: #ff69b4; /* 背景色をピンクに設定 */
+      border: none; /* ボーダーをなしに設定 */
+      color: white; /* テキスト色を白に設定 */
+      padding: 10px 20px; /* パディングを設定 */
+      text-align: center; /* テキストを中央揃えに設定 */
+      text-decoration: none; /* テキストの下線をなしに設定 */
+      display: inline-block; /* ボタンをインラインブロック要素として表示 */
+      font-size: 16px; /* フォントサイズを設定 */
+      border-radius: 25px; /* ボーダーの角を丸める */
+      cursor: pointer; /* カーソルをポインターに設定 */
+      animation: pulse 0.5s infinite alternate; /* アニメーションを設定 */
+      transition: background-color 0.3s; /* 背景色の変化をスムーズにする */
+  }
+  
+  /* アニメーションの定義 */
+  @keyframes pulse {
+      0% {
+          transform: scale(1); /* 初期状態 */
+      }
+      100% {
+          transform: scale(1.3); /* 拡大した状態 */
+      }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="todo-list-header">防災ToDoリスト</h1>
+    <h2 th:text="${title}"></h2>
+    <p th:text="${msg}"></p>
+    <form id="todoForm" th:action="@{/success}" method="post" onsubmit="return submitForm()">
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>Check!
+					</th>
+                    <th>Type</th>
+                    <th>Task</th>
+                    <th>Preference</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item:${list}">
+                    <td>
+                        <input type="checkbox" name="selectedItems" th:value="${item.id}">
+                    </td>
+                    <td th:text="*{item.type}"></td>
+                    <td th:text="*{item.task}"></td>
+                    <td th:text="*{item.preference}"></td>
+                    <td th:text="*{item.id}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 提出ボタン -->
+        <input type="submit" value="提出する" class="cute-button">
+    </form>
+  </div>
+
+  <script>
+    function submitForm() {
+        var checkboxes = document.getElementsByName('selectedItems');
+        var allChecked = true;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (!checkboxes[i].checked) {
+                allChecked = false;
+                break;
+            }
+        }
+        if (allChecked) {
+            return true;
+        } else {
+            alert('未達成のタスクがあります！！引き返してください！！');
+            return false;
+        }
+    }
+  </script>
+</body>
+</html>
